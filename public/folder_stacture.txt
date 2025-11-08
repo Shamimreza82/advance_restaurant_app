@@ -1,0 +1,120 @@
+restaurant-website/
+│
+├── app/                                # Next.js App Router (Frontend + API)
+│   ├── (site)/                         # Public user-facing pages
+│   │   ├── layout.tsx                  # Main layout (Navbar, Footer)
+│   │   ├── page.tsx                    # Homepage
+│   │   ├── menu/
+│   │   │   ├── page.tsx                # Menu page (all items)
+│   │   │   ├── [category]/
+│   │   │   │   ├── page.tsx            # Category-based page
+│   │   │   ├── [id]/
+│   │   │   │   ├── page.tsx            # Single item details
+│   │   ├── cart/
+│   │   │   ├── page.tsx                # Cart page
+│   │   ├── order/
+│   │   │   ├── page.tsx                # Checkout/order page
+│   │   ├── about/
+│   │   │   ├── page.tsx                # About restaurant
+│   │   ├── contact/
+│   │   │   ├── page.tsx                # Contact / feedback form
+│   │   ├── not-found.tsx               # Custom 404 page
+│   │
+│   ├── admin/                          # Admin dashboard (protected)
+│   │   ├── layout.tsx
+│   │   ├── page.tsx                    # Admin dashboard home
+│   │   ├── menu/
+│   │   │   ├── page.tsx                # Add/edit/delete menu items
+│   │   ├── orders/
+│   │   │   ├── page.tsx                # Manage orders
+│   │   ├── login/
+│   │   │   ├── page.tsx                # Admin login page
+│   │
+│   ├── api/                            # Backend routes (Next.js APIs)
+│   │   ├── menu/
+│   │   │   ├── route.ts                # GET, POST, PUT, DELETE menu items
+│   │   ├── order/
+│   │   │   ├── route.ts                # Handle order creation / get orders
+│   │   ├── upload/
+│   │   │   ├── route.ts                # Upload images to S3 / Cloudinary
+│   │   ├── auth/
+│   │   │   ├── route.ts                # Admin login/signup (JWT / NextAuth)
+│
+├── components/                         # Reusable React components
+│   ├── layout/
+│   │   ├── Navbar.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Sidebar.tsx
+│   ├── ui/
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Input.tsx
+│   │   ├── Modal.tsx
+│   ├── menu/
+│   │   ├── MenuCard.tsx
+│   │   ├── CategoryFilter.tsx
+│   ├── cart/
+│   │   ├── CartItem.tsx
+│   ├── order/
+│   │   ├── OrderSummary.tsx
+│   │   ├── OrderStatusBadge.tsx
+│
+├── lib/                                # Utility & helper functions
+│   ├── prisma.ts                       # Prisma client setup
+│   ├── auth.ts                         # Authentication logic (NextAuth/JWT)
+│   ├── upload.ts                       # File upload helpers
+│   ├── validate.ts                     # Input validation
+│   ├── constants.ts                    # Global constants (like currency, tax)
+│
+├── prisma/
+│   ├── schema.prisma                   # Prisma database schema
+│
+├── public/                             # Static assets (served as /)
+│   ├── images/
+│   │   ├── logo.png
+│   │   ├── banner.jpg
+│   │   ├── menu/
+│   │   │   ├── pizza.jpg
+│   │   │   ├── burger.jpg
+│   │   │   ├── drinks/
+│   ├── icons/
+│   │   ├── favicon.ico
+│   │   ├── apple-touch-icon.png
+│   ├── uploads/                        # (optional) Temporary uploads
+│
+├── assets/                             # Design files, JSON, or static data
+│   ├── data/
+│   │   ├── categories.json             # Example: menu category list
+│   ├── styles/
+│   │   ├── globals.css
+│   │   ├── theme.css
+│   │   ├── animations.css
+│   ├── fonts/
+│   │   ├── Inter.ttf
+│   │   ├── Poppins.ttf
+│
+├── hooks/                              # Custom React hooks
+│   ├── useCart.ts
+│   ├── useAuth.ts
+│   ├── useToast.ts
+│
+├── context/                            # Global context (e.g. CartContext)
+│   ├── CartContext.tsx
+│
+├── utils/                              # Helper utilities (date, price, etc.)
+│   ├── formatPrice.ts
+│   ├── dateFormat.ts
+│   ├── taxCalculator.ts
+│
+├── types/                              # TypeScript types
+│   ├── index.d.ts
+│   ├── menu.ts
+│   ├── order.ts
+│
+├── .env                                # Environment variables
+├── .gitignore
+├── next.config.js
+├── tailwind.config.js
+├── tsconfig.json
+├── package.json
+└── README.md
