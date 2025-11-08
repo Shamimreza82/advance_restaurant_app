@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
@@ -8,8 +8,11 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Calendar, Clock, Mail, Phone, User } from "lucide-react"
-import { bookingSchema, TBookingFormData } from "@/lib/validation/booking-form"
+
 import { toast } from "sonner"
+import { bookingSchema, TBookingFormData } from "@/lib/validation/booking-form"
+import { json } from "node:stream/consumers"
+import { da } from "zod/v4/locales"
 
 
 interface BookingFormProps {
@@ -24,24 +27,67 @@ export function BookingForm({
   subtitle = "BOOKING TABLE",
 }: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [date, setDate] = useState<string | null>('')
+  const [time, setTime] = useState('')
+  const [dbTime, setDbTime] = useState<string[] | null>([])
 
   const form = useForm<TBookingFormData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      phone: "",
-      guests: "",
+      fullName: "Reza",
+      email: "reza@example.com",
+      phone: "+8801531297879",
+      guests: "2",
       time: "",
     },
   })
 
+  console.log(dbTime)
+
+  useEffect(() => {
+    if (!time) return;
+    if (time) {
+      if (dbTime?.includes(time)) {
+        toast.error("This time slot is already booked. Please choose another time.")
+        form.setValue("time", "")
+        return;
+      }
+    }
+  }, [time, date, dbTime, form])
+
+
+
+  useEffect(() => {
+    const apiCall = async () => {
+      if (!date) return;
+
+      const res = await fetch(`/api/reservation?date=${encodeURIComponent(date)}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await res.json();
+      const bookedTimes = data.data.map((reservation: { time: string }) => reservation.time);
+      setDbTime(bookedTimes);
+      console.log("Reservations on selected date:", data);
+    };
+
+    apiCall();
+  }, [date]);
+
+  const handelDateChange = (date: string) => {
+    setDate(date)
+  }
+
+  const handleTimeChange = (time: string) => {
+    setTime(time)
+  }
 
   const handleSubmit = async (data: TBookingFormData) => {
     setIsSubmitting(true)
 
-   try {
-      const res = await fetch("/api/booking", {
+    try {
+      const res = await fetch("/api/reservation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -50,16 +96,15 @@ export function BookingForm({
       const result = await res.json();
       if (result.success) {
         toast.success(result.message)
-         setIsSubmitting(false)
+        setIsSubmitting(false)
         // form.reset();
       } else {
         console.error(result.errors || result.message);
-        alert("Error: " + JSON.stringify(result.errors || result.message));
+        toast.error(`${result.message}. Please Contect support: +8801531297879`)
         setIsSubmitting(false)
       }
     } catch (err) {
       console.error("Error submitting form:", err);
-      alert("Something went wrong!");
       setIsSubmitting(false)
     }
   }
@@ -68,6 +113,9 @@ export function BookingForm({
     value: String(i + 1),
     label: `${i + 1} Person${i + 1 !== 1 ? "s" : ""}`,
   }))
+
+
+
 
   return (
     <section className="w-full bg-stone-950 py-16 px-4 md:px-8">
@@ -184,9 +232,24 @@ export function BookingForm({
                     <FormControl>
                       <div className="relative">
                         <input
-                          type="date" // 👈 enables calendar popup
+                          type="date"
                           {...field}
-                          onFocus={(e) => e.target.showPicker?.()} // 👈 auto-opens calendar on click
+                          onFocus={(e) => e.target.showPicker?.()} // auto open
+                          onChange={(e) => {
+                            const selectedDate = new Date(e.target.value);
+                            const day = selectedDate.getUTCDay(); // 0=Sun, 5=Fri, 6=Sat
+
+                            // Disable Friday (5) and Saturday (6)
+                            if (day === 5 || day === 6) {
+                              alert("Friday and Saturday are not selectable 🚫");
+                              e.target.value = "";
+                              field.onChange(""); // reset in form
+                              return;
+                            }
+
+                            field.onChange(e); // ✅ keep RHF synced
+                            handelDateChange(e.target.value); // your custom logic
+                          }}
                           className="bg-stone-900 border-stone-700 text-white placeholder:text-stone-500 pl-10 h-12 w-full rounded-md cursor-pointer"
                         />
                         <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-stone-500 pointer-events-none" />
@@ -196,6 +259,7 @@ export function BookingForm({
                   </FormItem>
                 )}
               />
+
 
               {/* Time */}
               <FormField
@@ -208,13 +272,20 @@ export function BookingForm({
                         <input
                           type="time" // 👈 this enables the popup time picker
                           {...field}
+                          min="10:00" // 10 AM
+                          max="21:00" // 9 PM
                           onFocus={(e) => e.target.showPicker?.()} // 👈 ensures the picker opens immediately on click
+                          onChange={(e) => {
+                            field.onChange(e); // ✅ keep React Hook Form in sync
+                            handleTimeChange(e.target.value); // ✅ your custom logic
+                          }}
                           className="bg-stone-900 border-stone-700 text-white placeholder:text-stone-500 pl-10 h-12 w-full rounded-md cursor-pointer"
                         />
                         <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-stone-500 pointer-events-none" />
                       </div>
                     </FormControl>
                     <FormMessage className="text-red-500" />
+                    <div className="text-red-600">Note: Time select only between 10 AM to 9 PM</div>
                   </FormItem>
                 )}
               />
