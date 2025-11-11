@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { NavLink } from "./NavLink"
 import { usePathname } from "next/navigation"
+import { useSession } from "next-auth/react"
+import UserProfile from "./UserProfile"
 
 type DropdownEntry = { title: string; href: string }
 type NavItem =
@@ -63,6 +65,9 @@ const navData: NavItem[] = [
 export function Navbar() {
   const pathname = usePathname() || "/"
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { data: session , status} = useSession()
+
+  console.log("session", session)
   // for mobile dropdowns open/close state
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
 
@@ -136,14 +141,16 @@ export function Navbar() {
         </div>
 
         {/* CTA (hidden on small screens) */}
-        <div className="hidden md:block">
+        <div className="hidden md:block space-x-4">
           <Link href={"/book-a-table"}>
             <Button className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded-md flex-shrink-0">
               BOOK A TABLE
             </Button>
           </Link>
+         
+       
         </div>
-
+   <UserProfile />
         {/* Mobile hamburger */}
         <button
           aria-expanded={mobileOpen}
@@ -233,6 +240,17 @@ export function Navbar() {
               )
             })}
 
+            <div className="pt-4 border-t border-stone-800">
+              <Button
+                onClick={() => {
+                  setMobileOpen(false)
+                  // optionally navigate in parent if needed; Link preferred
+                }}
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded-md"
+              >
+                BOOK A TABLE
+              </Button>
+            </div>
             <div className="pt-4 border-t border-stone-800">
               <Button
                 onClick={() => {

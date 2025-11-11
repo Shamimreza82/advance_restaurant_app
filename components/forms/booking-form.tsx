@@ -13,6 +13,7 @@ import { toast } from "sonner"
 import { bookingSchema, TBookingFormData } from "@/lib/validation/booking-form"
 import { json } from "node:stream/consumers"
 import { da } from "zod/v4/locales"
+import { useSession } from "next-auth/react"
 
 
 interface BookingFormProps {
@@ -31,16 +32,33 @@ export function BookingForm({
   const [time, setTime] = useState('')
   const [dbTime, setDbTime] = useState<string[] | null>([])
 
+  const { data: session } = useSession()
+
   const form = useForm<TBookingFormData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      fullName: "Reza",
-      email: "reza@example.com",
-      phone: "+8801531297879",
-      guests: "2",
+      fullName: "",
+      email: "",
+      phone: "",
+      guests: "",
       time: "",
     },
   })
+
+
+ useEffect(() => {
+    if (session?.user) {
+      form.reset({
+        fullName: session.user.name || "",
+        email: session.user.email || "",
+        phone: "", // You can set default phone if available
+        guests: "",
+        time: "",
+      });
+    }
+  }, [session, form]);
+
+
 
   console.log(dbTime)
 
@@ -83,9 +101,12 @@ export function BookingForm({
     setTime(time)
   }
 
+
+
+
   const handleSubmit = async (data: TBookingFormData) => {
     setIsSubmitting(true)
-
+  
     try {
       const res = await fetch("/api/reservation", {
         method: "POST",
@@ -95,7 +116,8 @@ export function BookingForm({
 
       const result = await res.json();
       if (result.success) {
-        toast.success(result.message)
+        toast.success("Reservation successful! Confirmation email sent.")
+
         setIsSubmitting(false)
         // form.reset();
       } else {

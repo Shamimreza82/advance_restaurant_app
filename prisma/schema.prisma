@@ -14,8 +14,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-
-
 model Reservation {
   id        String   @id @default(uuid())
   fullName  String
@@ -23,12 +21,19 @@ model Reservation {
   phone     String
   guests    Int
   date      DateTime
-  time      String   // you can store as string (HH:MM) or combine with 'date' as DateTime
+  time      String // you can store as string (HH:MM) or combine with 'date' as DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
 
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String
+  phone    String
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 
-
-//@map("reservation")
