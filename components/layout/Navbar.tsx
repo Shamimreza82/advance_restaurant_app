@@ -30,16 +30,18 @@ const navData: NavItem[] = [
     ],
   },
   { type: "link", title: "ABOUT", href: "/about" },
-  {
-    type: "dropdown",
-    title: "MENU",
-    entries: [
-      { title: "Appetizers", href: "/menu/appetizers" },
-      { title: "Main Course", href: "/menu/main-course" },
-      { title: "Desserts", href: "/menu/desserts" },
-      { title: "Beverages", href: "/menu/beverages" },
-    ],
-  },
+  // {
+  //   type: "dropdown",
+  //   title: "MENU",
+  //   entries: [
+  //     { title: "Menu", href: "/menu/manus" },
+  //     { title: "Appetizers", href: "/menu/appetizers" },
+  //     { title: "Main Course", href: "/menu/main-course" },
+  //     { title: "Desserts", href: "/menu/desserts" },
+  //     { title: "Beverages", href: "/menu/beverages" },
+  //   ],
+  // },
+   { type: "link", title: "MANU", href: "/menu/manus" },
   {
     type: "dropdown",
     title: "PAGES",

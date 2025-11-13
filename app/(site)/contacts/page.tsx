@@ -1,9 +1,10 @@
 import { BookingForm } from '@/components/forms/booking-form'
+import ContactForm from '@/components/pages-component/ContactForm'
 import { ImageTop } from '@/components/sheared/ImageTop'
 import Image from 'next/image'
 
 
-const ContectPage = () => {
+const ContactPage = () => {
   return (
     <div>
       <ImageTop
@@ -11,9 +12,9 @@ const ContectPage = () => {
       subtitle='Find us hear'
       backgroundImage='/images/elegant-restaurant-ambiance.jpg'
       />
-      <BookingForm/>
+      <ContactForm />
     </div>
   )
 }
 
-export default ContectPage
+export default ContactPage;
