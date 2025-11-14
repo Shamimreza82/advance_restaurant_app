@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from 'sonner';
 import { Providers } from "./providers";
+import CookieConsent from "@/components/sheared/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
           <Toaster richColors />
           <Navbar />
           {children}
+           <CookieConsent />
           <Footer />
         </Providers>
       </body>

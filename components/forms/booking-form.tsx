@@ -11,9 +11,8 @@ import { Calendar, Clock, Mail, Phone, User } from "lucide-react"
 
 import { toast } from "sonner"
 import { bookingSchema, TBookingFormData } from "@/lib/validation/booking-form"
-import { json } from "node:stream/consumers"
-import { da } from "zod/v4/locales"
 import { useSession } from "next-auth/react"
+import { FullScreenLoader } from "../sheared/FullScreenLoader"
 
 
 interface BookingFormProps {
@@ -263,7 +262,7 @@ export function BookingForm({
 
                             // Disable Friday (5) and Saturday (6)
                             if (day === 5 || day === 6) {
-                              alert("Friday and Saturday are not selectable 🚫");
+                              toast.warning("Friday and Saturday are not selectable 🚫")
                               e.target.value = "";
                               field.onChange(""); // reset in form
                               return;
@@ -324,6 +323,7 @@ export function BookingForm({
                 <span className="ml-2">›</span>
               </Button>
             </div>
+            <FullScreenLoader show={isSubmitting}/>
           </form>
         </Form>
       </div>

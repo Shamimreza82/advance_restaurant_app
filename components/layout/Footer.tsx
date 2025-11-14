@@ -1,5 +1,6 @@
 import { MapPin, Mail, Phone } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 const galleryImages = [
   { id: 1, src: "/images/coffee-cup.jpg" },
@@ -104,9 +105,9 @@ export function Footer() {
             <a href="#" className="hover:text-amber-600 transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-amber-600 transition-colors">
+            <Link href="/terms-and-policy" className="hover:text-amber-600 transition-colors">
               Terms of Service
-            </a>
+            </Link>
           </div>
         </div>
       </div>

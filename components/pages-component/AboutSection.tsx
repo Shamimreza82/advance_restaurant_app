@@ -30,7 +30,7 @@ const AboutSection = () => {
           {/* Left Column: Image/Visual Placeholder */}
           <div className="relative h-96 lg:h-full rounded-xl overflow-hidden shadow-2xl">
             <Image
-              src="https://placehold.co/800x600/171717/ffffff?text=Our+Chef+in+Action"
+              src="/images/about-1.jpg"
               alt="Bistro Lumière Chef"
               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
             //   onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/800x600/171717/ffffff?text=Placeholder+Image"; }}
