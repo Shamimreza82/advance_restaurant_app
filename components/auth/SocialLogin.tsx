@@ -29,10 +29,22 @@ export default function SocialLogin({
   const handleLogin = async () => {
     setLoading(true);
 
+    // if(pathname === "/signin"){
+    //   return await signIn(provider, {
+    //   callbackUrl: '/dashboard',
+    // });
+    // }
+
     // 👇 If no callbackUrl passed, return to current page after login
     const result = await signIn(provider, {
       callbackUrl: callbackUrl || pathname,
     });
+
+
+  if (result?.error) {
+    console.error("Login error:", result.error);
+    alert(`Failed to login with ${provider}`);
+  }
 
     console.log(result);
     setLoading(false);

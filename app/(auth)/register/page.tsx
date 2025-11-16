@@ -144,7 +144,7 @@ export default function RegisterPage() {
             <div className="border-t border-gray-300 w-1/3"></div>
           </div>
 
-          <SocialLogin provider="google" className="bg-white mt-2" />
+          <SocialLogin provider="google" callbackUrl="/dashboard" className="bg-white mt-2" />
 
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}

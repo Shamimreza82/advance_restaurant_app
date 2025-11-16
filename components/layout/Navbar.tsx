@@ -41,7 +41,7 @@ const navData: NavItem[] = [
   //     { title: "Beverages", href: "/menu/beverages" },
   //   ],
   // },
-   { type: "link", title: "MANU", href: "/menu/manus" },
+  { type: "link", title: "MANU", href: "/menu/manus" },
   {
     type: "dropdown",
     title: "PAGES",
@@ -67,7 +67,7 @@ const navData: NavItem[] = [
 export function Navbar() {
   const pathname = usePathname() || "/"
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { data: session , status} = useSession()
+  const { data: session, status } = useSession()
 
   console.log("session", session)
   // for mobile dropdowns open/close state
@@ -100,6 +100,12 @@ export function Navbar() {
 
   // aria label for the mobile toggle
   const mobileToggleLabel = mobileOpen ? "Close navigation" : "Open navigation"
+
+  const mobileSigninHandeler = () => {
+    if(!session){
+      return setMobileOpen(false)
+    }
+  }
 
   return (
     <>
@@ -149,10 +155,12 @@ export function Navbar() {
               BOOK A TABLE
             </Button>
           </Link>
-         
-       
+
+
         </div>
-   <UserProfile />
+        <div className="hidden md:block">
+          <UserProfile />
+        </div>
         {/* Mobile hamburger */}
         <button
           aria-expanded={mobileOpen}
@@ -183,12 +191,12 @@ export function Navbar() {
             } bg-stone-950 text-white shadow-xl`}
         >
           <div className="p-4 flex items-center justify-between border-b border-stone-800">
-            <Link href="/" className="flex items-center gap-2" onClick={onNavigate}>
-              <div className="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold">K</span>
-              </div>
-              <span className="font-bold text-lg">Kaffen</span>
-            </Link>
+
+            <div onClick={mobileSigninHandeler}>
+              <UserProfile />
+            </div>
+
+
 
             <button
               aria-label="Close"
@@ -243,26 +251,11 @@ export function Navbar() {
             })}
 
             <div className="pt-4 border-t border-stone-800">
-              <Button
-                onClick={() => {
-                  setMobileOpen(false)
-                  // optionally navigate in parent if needed; Link preferred
-                }}
-                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded-md"
-              >
-                BOOK A TABLE
-              </Button>
-            </div>
-            <div className="pt-4 border-t border-stone-800">
-              <Button
-                onClick={() => {
-                  setMobileOpen(false)
-                  // optionally navigate in parent if needed; Link preferred
-                }}
-                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded-md"
-              >
-                BOOK A TABLE
-              </Button>
+              <Link href={"/book-a-table"}>
+                <Button onClick={() => setMobileOpen(false)} className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded-md flex-shrink-0">
+                  BOOK A TABLE
+                </Button>
+              </Link>
             </div>
           </nav>
         </aside>

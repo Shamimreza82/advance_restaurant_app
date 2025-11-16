@@ -1,12 +1,16 @@
-import NotFound from "@/components/sheared/NotFound"
-
+import NotFound from "@/components/sheared/NotFound";
+import NotFoundUser from "@/components/sheared/NotFoundUser";
 
 const NotFoundPage = () => {
+  const isDev = process.env.NODE_ENV === "production";
+
+
+
   return (
     <div>
-        <NotFound />
+      {isDev ? <NotFoundUser/> : <NotFound/> }
     </div>
-  )
-}
+  );
+};
 
-export default NotFoundPage
+export default NotFoundPage;

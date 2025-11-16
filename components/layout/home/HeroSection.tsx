@@ -1,72 +1,102 @@
-// components/HeroSection.tsx
+/* eslint-disable react-hooks/purity */
+"use client";
 
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { motion } from "framer-motion";
+import FloatingWhatsApp from "./FloatingWhatsApp";
+import Link from "next/link";
 
-// Placeholder for your main hero image
-// You should place an image file (e.g., 'hero-bistro.jpg') in your public directory
-const HERO_IMAGE_PATH = "/hero-bistro.jpg";
 
-export function HeroSection() {
+export default function Hero() {
   return (
-    // 1. Main container with dark background (bg-black)
-    <section className="relative w-full h-[600px] md:h-[800px] overflow-hidden bg-black text-white">
-      
-      {/* 2. Background Image with subtle dark overlay */}
+    <section className="relative min-h-screen w-full flex items-center justify-center bg-black text-white overflow-hidden">
+
+      {/* Animated Spotlights */}
       <div className="absolute inset-0">
-        <Image
-          src={HERO_IMAGE_PATH}
-          alt="Elegant restaurant interior"
-          layout="fill"
-          objectFit="cover"
-          priority
-          className="opacity-50" // Adjust opacity for the dark theme feel
-        />
-        {/* Extra dark overlay to match the deep black theme */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full bg-orange-500/10 blur-[160px] animate-pulse" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-orange-700/10 blur-[180px]" />
       </div>
 
-      {/* 3. Central Content (z-10 to stack above the image) */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-        
-        {/* Title/Branding */}
-        <p className="text-sm tracking-widest uppercase text-amber-500 mb-2 font-serif">
-          Experience Fine Dining
-        </p>
 
-        {/* Main Heading */}
-        <h1 className="text-5xl md:text-7xl font-extrabold mb-4 max-w-4xl leading-tight font-serif italic">
-          Bistro Lumière
-        </h1>
+      {/* Subtle floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(50)].map((_, i) => (
+          <motion.span
+            key={i}
+            className="absolute w-1 h-1 bg-white/30 rounded-full"
+            initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
+            animate={{
+              opacity: [0.2, 0.7, 0.2],
+              // eslint-disable-next-line react-hooks/purity
+              x: Math.random() * 600 - 300,
+              y: Math.random() * 600 - 300,
+              scale: [0.5, 1, 0.5],
+            }}
+            transition={{
+              duration: Math.random() * 6 + 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
-        {/* Subtitle/Slogan */}
-        <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl">
-          Where exquisite flavors meet an unforgettable ambiance.
-        </p>
+      {/* Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-20 text-center px-4 max-w-4xl"
+      >
 
-        {/* Call to Action Button (matching the 'BOOK A TABLE' orange/red) */}
-        <Button
-          className="bg-[#D97706] hover:bg-[#B45309] text-white text-lg px-8 py-6 rounded-none uppercase tracking-widest font-bold transition-colors shadow-lg"
-          asChild
+        {/* Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="text-5xl md:text-7xl font-bold leading-tight"
         >
-          <a href="#booking">Book A Table Now</a>
-        </Button>
-      </div>
+          Discover the Art of<br />
+          <span className="text-orange-500">Exquisite Cuisine</span>
+        </motion.h1>
 
-      {/* Optional: Scroll Indicator (Triangle down arrow) */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg
-          className="w-6 h-6 text-white"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+        {/* Subtext */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-5 text-gray-300 text-lg md:text-xl"
         >
-          <path d="M19 9l-7 7-7-7"></path>
-        </svg>
-      </div>
+          A masterful blend of flavors, ambiance, and unforgettable luxury dining.
+        </motion.p>
+
+        {/* Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="flex items-center justify-center gap-4 mt-10"
+        >
+          <Link
+            href={"/book-a-table"}
+            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-4 text-lg rounded-xl shadow-lg shadow-orange-600/30"
+          >
+            Book a Table
+          </Link>
+
+          <Button
+            size="lg"
+            variant="outline"
+            className="border-white/20 text-white px-8 py-6 text-lg rounded-xl backdrop-blur-xl hover:bg-white/10"
+          >
+            Explore Menu
+          </Button>
+        </motion.div>
+      </motion.div>
+      <FloatingWhatsApp phoneNumber="+8801531297879"/>
+
+      {/* Bottom Fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent"></div>
     </section>
   );
 }

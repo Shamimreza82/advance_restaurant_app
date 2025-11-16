@@ -1,26 +1,27 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-import { NextResponse } from "next/server";
+export async function middleware(req: NextRequest) {
+   const token = await getToken({req, secret: process.env.NEXTAUTH_SECRET});
 
+  console.log(req)
 
+  const pathname = new URL(req.url).pathname;
 
+  // Protected routes
+  const protectedRoutes = ["/dashboard"];
 
-export async function middleware() {
-    // getRedisConntion()
-  // Initialize Redis connection when the first request comes in
-//   const redis = getRedisConnection();
+  const isProtected = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
 
-//   // Optionally ping once to ensure it's alive
-//   try {
-//     await redis.ping();
-//     console.log("🚀 Redis connected during middleware init");
-//   } catch (err) {
-//     console.error("❌ Redis failed to connect:", err);
-//   }
+  if (isProtected && !token) {
+    return NextResponse.redirect(new URL("/signin", req.url));
+  }
 
   return NextResponse.next();
- 
 }
 
-// export const config = {
-//   matcher: "/", // or "/*" if you want it to run for all routes
-// };
+export const config = {
+  matcher: ["/dashboard/:path*"],
+};

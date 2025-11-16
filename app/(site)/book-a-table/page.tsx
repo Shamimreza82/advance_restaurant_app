@@ -6,7 +6,8 @@ const BookATablePage = () => {
   return (
     <div>
         <ImageTop
-        title='Book a table'
+        title='Book a table' 
+        clasName="hidden md:block"
         />
         <BookingForm/>
     </div>

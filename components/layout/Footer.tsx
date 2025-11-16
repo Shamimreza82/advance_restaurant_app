@@ -3,13 +3,14 @@ import Image from "next/image"
 import Link from "next/link"
 
 const galleryImages = [
-  { id: 1, src: "/images/coffee-cup.jpg" },
-  { id: 2, src: "/latte-art.jpg" },
-  { id: 3, src: "/coffee-beans.jpg" },
-  { id: 4, src: "/espresso-machine.jpg" },
-  { id: 5, src: "/coffee-shop.jpg" },
-  { id: 6, src: "/brewing-coffee.jpg" },
+  { id: 1, src: "/gallary/gallary-1.avif" },
+  { id: 2, src: "/gallary/gallary-2.avif" },
+  { id: 3, src: "/gallary/gallary-3.avif" },
+  { id: 4, src: "/gallary/gallary-4.avif" },
+  { id: 5, src: "/gallary/gallary-5.avif" },
+  { id: 6, src: "/gallary/gallary-6.avif" },
 ]
+
 
 export function Footer() {
   return (

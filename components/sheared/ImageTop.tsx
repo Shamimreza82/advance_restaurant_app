@@ -3,12 +3,13 @@ interface HeroProps {
     subtitle?: string
     backgroundImage?: string
     backgroundPosition?: string
+    clasName?: string
 }
 
-export function ImageTop({ title, subtitle, backgroundImage, backgroundPosition = "center" }: HeroProps) {
+export function ImageTop({ title, subtitle, backgroundImage, backgroundPosition = "center", clasName }: HeroProps) {
     return (
         <section
-            className="relative h-96 w-full flex items-center justify-center overflow-hidden"
+            className={`relative h-96 w-full flex items-center justify-center overflow-hidden ${clasName}`}
             style={{
                 backgroundImage: `url(${backgroundImage || "/images/default-bg.jpg"})`,
                 backgroundSize: "cover",
